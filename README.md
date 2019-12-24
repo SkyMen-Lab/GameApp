@@ -1,5 +1,9 @@
 # GameService - Alpha
-[![Build Status](https://travis-ci.com/SkyMen-Lab/GameService.svg?branch=master)](https://travis-ci.com/SkyMen-Lab/GameService)
+
+| Master                                                                                                                          | Develop                                                                                                                          |
+|---------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| [![Build Status](https://travis-ci.com/SkyMen-Lab/GameService.svg?branch=master)](https://travis-ci.com/SkyMen-Lab/GameService) | [![Build Status](https://travis-ci.com/SkyMen-Lab/GameService.svg?branch=develop)](https://travis-ci.com/SkyMen-Lab/GameService) |
+
 
 ## Intro
 
