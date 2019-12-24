@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameService.API", "GameService.API\GameService.API.csproj", "{758C66AD-8AF6-405D-8978-6F598D2AA3D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameService.Domain", "GameService.Domain\GameService.Domain.csproj", "{1D958733-40E6-4349-95DB-0899AF13F980}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{758C66AD-8AF6-405D-8978-6F598D2AA3D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{758C66AD-8AF6-405D-8978-6F598D2AA3D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{758C66AD-8AF6-405D-8978-6F598D2AA3D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{758C66AD-8AF6-405D-8978-6F598D2AA3D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D958733-40E6-4349-95DB-0899AF13F980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D958733-40E6-4349-95DB-0899AF13F980}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D958733-40E6-4349-95DB-0899AF13F980}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D958733-40E6-4349-95DB-0899AF13F980}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,84 @@
+{
+  $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      'code',
+      'duration',
+      'teams'
+    ],
+    properties: {
+      code: {
+        bsonType: 'string',
+        description: 'must be a string and is required'
+      },
+      duration: {
+        bsonType: 'int',
+        description: 'must be an int and is required'
+      },
+      teams: {
+        bsonType: 'array',
+        minItems: 2,
+        maxItems: 2,
+        items: {
+          bsonType: 'object',
+          required: [
+            'code',
+            'name',
+            'ip'
+          ],
+          properties: {
+            code: {
+              bsonType: 'string',
+              description: 'is required and must be string'
+            },
+            name: {
+              bsonType: 'string',
+              description: 'is required and must be string'
+            },
+            numberOfPlayers: {
+              bsonType: 'int',
+              description: 'must be int'
+            },
+            constant: {
+              bsonType: 'double',
+              description: 'must be double'
+            },
+            score: {
+              bsonType: 'int',
+              description: 'must be int'
+            },
+            ip: {
+              bsonType: 'string',
+              description: 'must be string and is required'
+            }
+          }
+        },
+        description: 'must be an array (max 2 items) and is required'
+      },
+      scoreTimings: {
+        bsonType: 'array',
+        minItems: 0,
+        description: 'must be an array and contain a scoreTiming object',
+        items: {
+          bsonType: [
+            'object'
+          ],
+          required: [
+            'time',
+            'team'
+          ],
+          properties: {
+            time: {
+              bsonType: 'timestamp',
+              description: 'is required and must be timestamp'
+            },
+            teamCode: {
+              bsonType: 'string',
+              description: 'is required and must be a string'
+            }
+          }
+        }
+      }
+    }
+  }
+}

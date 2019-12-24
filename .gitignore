@@ -2,3 +2,13 @@
 .idea/.idea.GameApp/.idea/
 
 .idea/.idea.GameApp/
+
+.DS_Store
+
+.idea/
+
+.vs/
+
+GameService.Domain/obj/
+
+GameService.API/obj/
