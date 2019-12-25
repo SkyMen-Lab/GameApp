@@ -18,6 +18,7 @@
     "GameApp": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "v1a/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
