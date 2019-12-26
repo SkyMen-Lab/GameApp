@@ -6,8 +6,8 @@ namespace GameService.Domain.Repositories
 {
     public interface IMongoRepository<T>
     {
-        List<T> GetAll();
-        List<T> GetList(Expression<Func<T, bool>> expression);
+        IEnumerable<T> GetAll();
+        IEnumerable<T> GetList(Expression<Func<T, bool>> expression);
         T GetOne(string identifier);
         T CreateOne(T entity);
         bool Update(string identifier, T newEntity);

@@ -14,12 +14,14 @@ namespace GameService.Domain.Models
         [BsonRepresentation(BsonType.Int32)]
         [BsonElement("numberOfPlayers")]
         public int NumberOfPlayers { get; set; }
+
         [BsonElement("constant")]
         [BsonRepresentation(BsonType.Double)]
-        public double Constant { get; set; }
+        public double Constant { get; set; } = 1.0;
+
         [BsonElement("score")]
         [BsonRepresentation(BsonType.Int32)]
-        public int Score { get; set; }
+        public int Score { get; set; } = 0;
         [BsonRepresentation(BsonType.String)]
         [BsonElement("ip")]
         public string RouterIp { get; set; }

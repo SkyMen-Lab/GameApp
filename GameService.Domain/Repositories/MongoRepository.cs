@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using GameService.Domain.Configs;
 using GameService.Domain.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace GameService.Domain.Repositories
@@ -18,8 +19,14 @@ namespace GameService.Domain.Repositories
             _games = db.GetCollection<Game>(settings.CollectionName);
         }
 
-        public List<Game> GetAll() => _games.Find(game => true).ToList();
-        public List<Game> GetList(Expression<Func<Game, bool>> exp) => _games.Find(exp).ToList();
+        public IEnumerable<Game> GetAll() => _games.Find(game => true).ToEnumerable();
+        public IEnumerable<Game> GetList(Expression<Func<Game, bool>> expression) => _games.Find(expression).ToEnumerable();
+        
+        public IEnumerable<Game> GetListSorted(Expression<Func<Game, bool>> exp, SortDefinition<Game> sortDefinition) => 
+            _games
+                .Find(exp)
+                .Sort(sortDefinition)
+                .ToEnumerable();
 
         public Game GetOne(string code) => _games.Find(game => string.Equals(game.Code, code)).FirstOrDefault();
 
@@ -28,16 +35,7 @@ namespace GameService.Domain.Repositories
             var code = game.Code;
             //TODO: custom exceptions
             if (GetOne(code) != null) throw new ArgumentException();
-            try
-            {
-                _games.InsertOne(game);
-            }
-            catch (MongoWriteException me)
-            {
-                Console.WriteLine(me);
-                return null;
-            }
-
+            _games.InsertOne(game);
             return game;
         }
 

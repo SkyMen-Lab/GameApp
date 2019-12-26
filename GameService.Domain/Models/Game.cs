@@ -18,6 +18,6 @@ namespace GameService.Domain.Models
         [BsonElement("teams")]
         public List<Team> Teams { get; set; }
         [BsonElement("scoreTimings")]
-        public List<ScoreTiming> ScoreTimings { get; set; }
+        public List<ScoreTiming> ScoreTimings { get; set; } = new List<ScoreTiming>();
     }
 }

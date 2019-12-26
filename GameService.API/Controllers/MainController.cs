@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameService.Domain.Models;
 using GameService.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace GameApp.Controllers
 {
@@ -22,41 +24,33 @@ namespace GameApp.Controllers
         // GET
         public IActionResult Index()
         {
-            return Ok("Hello");
+            return Ok(
+                _mongoRepository
+                    .GetListSorted(x => true, 
+                        new BsonDocumentSortDefinition<Game>(new BsonDocument("$natural", -1)))
+                    .ToList()
+            );
         }
-
-        //TODO: replace by PUT method
-        [Route("create")]
-        public IActionResult Create()
+        
+        
+        [HttpPost("create")]
+        public IActionResult Create([FromBody]Game game)
         {
-            var game = _mongoRepository.CreateOne(new Game
+            var existingGame = _mongoRepository.GetOne(game.Code);
+            if (existingGame != null) return Conflict();
+
+            try
             {
-                Code = "newcode3",
-                //Duration = 10,
-                Teams = new List<Team>
-                {
-                    new Team
-                    {
-                        Code = "345345",
-                        Constant = 2.0,
-                        Name = "Bedford School2",
-                        NumberOfPlayers = 10,
-                        RouterIp = "86.111.139.123",
-                        Score = 0
-                    },
-                    new Team
-                    {
-                        Code = "35235",
-                        Constant = 2.0,
-                        Name = "Rugby School2",
-                        NumberOfPlayers = 5,
-                        RouterIp = "86.111.139.150",
-                        Score = 0
-                    },
-                },
-                ScoreTimings = new List<ScoreTiming>()
-            });
-            return Ok(game);
+                _mongoRepository.CreateOne(game);
+            }
+            catch (MongoWriteException e)
+            {
+                return BadRequest(e);
+            }
+            
+            //TODO: set messages to frontend to start
+            
+            return Ok();
         }
     }
 }
