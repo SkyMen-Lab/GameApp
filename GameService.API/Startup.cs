@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameService.Domain.Configs;
+using GameService.Domain.Models;
+using GameService.Domain.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -32,6 +34,7 @@ namespace GameApp
                 Configuration.GetSection("DebDbSettings"));
             services.AddSingleton<IDbSettings>(provider =>
                 provider.GetRequiredService<IOptions<DbSettings>>().Value);
+            services.AddSingleton<MongoRepository>();
             services.AddControllers();
             services.AddMvc()
                 .AddNewtonsoftJson(options =>
@@ -47,6 +50,8 @@ namespace GameApp
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 

@@ -1,13 +1,27 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace GameService.Domain.Models
 {
     public class Team
     {
-        public string Id { get; set; }
+        [BsonElement("code")]
+        [BsonRepresentation(BsonType.String)]
         public string Code { get; set; }
+        [BsonElement("name")]
+        [BsonRepresentation(BsonType.String)]
         public string Name { get; set; }
+        [BsonRepresentation(BsonType.Int32)]
+        [BsonElement("numberOfPlayers")]
         public int NumberOfPlayers { get; set; }
+        [BsonElement("constant")]
+        [BsonRepresentation(BsonType.Double)]
         public double Constant { get; set; }
+        [BsonElement("score")]
+        [BsonRepresentation(BsonType.Int32)]
         public int Score { get; set; }
+        [BsonRepresentation(BsonType.String)]
+        [BsonElement("ip")]
         public string RouterIp { get; set; }
     }
 }

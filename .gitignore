@@ -14,3 +14,5 @@ GameService.Domain/obj/
 GameService.API/obj/
 
 GameService.API/bin/
+
+GameService.Domain/bin/
