@@ -31,6 +31,19 @@ namespace GameApp.Controllers
                     .ToList()
             );
         }
+
+        [HttpGet("list/{page:int}")]
+        public IActionResult GetList(int page = 1)
+        {
+            if (page < 1) return BadRequest();
+            var list = _mongoRepository
+                .GetListSorted(x => true,
+                    new BsonDocumentSortDefinition<Game>(new BsonDocument("$natural", -1)))
+                .Skip((page - 1) * 10)
+                .Take(10)
+                .ToList();
+            return Ok(list);
+        }
         
         
         [HttpPost("create")]
