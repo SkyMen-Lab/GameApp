@@ -45,6 +45,12 @@ namespace GameService.Domain.Repositories
             return result;
         }
 
+        public bool Update(Expression<Func<Game, bool>> filter, UpdateDefinition<Game> updateDefinition)
+        {
+            var result = _games.UpdateOne(filter, updateDefinition).IsAcknowledged;
+            return result;
+        }
+
         public bool Delete(string code)
         {
             var result = _games.DeleteOne(game => string.Equals(game.Code, code)).IsAcknowledged;
