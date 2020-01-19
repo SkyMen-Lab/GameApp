@@ -16,3 +16,5 @@ GameService.API/obj/
 GameService.API/bin/
 
 GameService.Domain/bin/
+
+GameService.API/logs/
