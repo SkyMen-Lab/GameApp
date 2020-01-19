@@ -15,6 +15,13 @@ namespace GameService.Domain.Models
         [BsonElement("duration")]
         [BsonRepresentation(BsonType.Int32)]
         public int Duration { get; set; }
+
+        [BsonElement("ballSpeed")]
+        public float BallSpeed { get; set; } = 1;
+        
+        [BsonElement("ballPosition")]
+        public Position BallPosition { get; set; }
+        
         [BsonElement("teams")]
         public List<Team> Teams { get; set; }
         [BsonElement("scoreTimings")]
