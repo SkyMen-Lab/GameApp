@@ -91,17 +91,22 @@ namespace GameApp.Controllers
                 Log.Warning($"The team {info.SchoolCode} does not exist");
                 return BadRequest();
             }
-
-            currentTeam.NumberOfPlayers++;
-
+            
+            //find a team in a game by codes
             Expression<Func<Game, bool>> filter = x => string.Equals(x.Code, info.GameCode) && x.Teams.Any(y => string.Equals(y.Code, info.SchoolCode));
 
-            UpdateDefinition<Game> updateDefinition = Builders<Game>.Update.Set(
+            //update number of players
+            currentTeam.NumberOfPlayers++;
+            UpdateDefinition<Game> updatePlayersDefinition = Builders<Game>.Update.Set(
                 x => x.Teams[-1].NumberOfPlayers, currentTeam.NumberOfPlayers);
 
-            //TODO: recalculate constant
+            //recalculate constant
+            var constant = 1.0 / currentTeam.NumberOfPlayers;
+            UpdateDefinition<Game> updateConstantDefinition = Builders<Game>.Update.Set(
+                x => x.Teams[-1].Constant, constant);
 
-            _mongoRepository.Update(filter, updateDefinition);
+            _mongoRepository.Update(filter, updatePlayersDefinition);
+            _mongoRepository.Update(filter, updateConstantDefinition);
             Log.Information($"New player has successfully joined {currentTeam.Name}");
 
             return Ok();
