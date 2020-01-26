@@ -18,3 +18,5 @@ GameService.API/bin/
 GameService.Domain/bin/
 
 GameService.API/logs/
+
+GameService.API/.vscode/
