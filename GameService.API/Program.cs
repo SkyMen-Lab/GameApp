@@ -24,7 +24,7 @@ namespace GameApp
             try
             {
                 Log.Information("Starting up");
-                CreateHostBuilder(args).Build().Run();
+                CreateHostBuilder(args).Run();
             }
             catch (Exception e)
             {
@@ -36,9 +36,14 @@ namespace GameApp
             }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .UseSerilog()
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        public static IWebHost CreateHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseKestrel((context, options) =>
+                {
+                    options.Listen(IPAddress.Loopback, 5000);
+                    options.Listen(IPAddress.Loopback, 5001, listenOptions => { listenOptions.UseHttps(); });
+                })
+                .UseStartup<Startup>()
+                .Build();
     }
 }
