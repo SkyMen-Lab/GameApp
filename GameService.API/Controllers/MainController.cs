@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using GameApp.Extensions;
+using GameApp.GameConnectors;
 using GameService.Domain.DTOs;
 using GameService.Domain.Models;
 using GameService.Domain.Repositories;
@@ -18,16 +21,19 @@ namespace GameApp.Controllers
     {
 
         private readonly MongoRepository _mongoRepository;
+        private readonly IGameManager _gameManager;
 
-        public MainController(MongoRepository mongoRepository)
+        public MainController(MongoRepository mongoRepository, IGameManager gameManager)
         {
             _mongoRepository = mongoRepository;
+            _gameManager = gameManager;
         }
 
         // GET
         public IActionResult Index()
         {
             Log.Information("Loading index");
+            _gameManager.StartTheGameAsync("c,121");
             return Ok(
                 _mongoRepository
                     .GetListSorted(x => true, 
@@ -67,12 +73,25 @@ namespace GameApp.Controllers
                 Log.Warning(e,$"Error occured while creating new game {game.Code}");
                 return BadRequest(e);
             }
+
+
+            _gameManager.RegisterTeamsAsync(game.Teams);
             
-            //TODO: set messages to frontend to start
             Log.Information($"The game {game.Code} has been created successfully");
             return Ok();
         }
 
+        [HttpPost("start")]
+        public async Task<IActionResult> StartGameAsync([FromBody] string code)
+        {
+            if (_mongoRepository.GetOne(code) != null)
+                await _gameManager.StartTheGameAsync(code);
+            else
+                return NotFound();
+            
+            return Ok();
+        }
+        
         //TOBE replaced by Event Bus
         [HttpPost("user_joined")]
         public IActionResult UserJoined([FromBody] UserJoinedDTO info)

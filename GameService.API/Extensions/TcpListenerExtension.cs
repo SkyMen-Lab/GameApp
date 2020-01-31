@@ -2,7 +2,9 @@ using System;
 using System.Buffers;
 using System.IO.Pipelines;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
+using GameApp.GameConnectors;
 using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,7 @@ namespace GameApp.Extensions
             services.Configure<TcpConnectionOptions>(options => { options.EndPoint = endPoint; });
             
             services.TryAddSingleton<IMessageHandler, MessageHandler>();
+            services.TryAddSingleton<IGameManager, GameManager>();
             return services;
         }
     }
@@ -50,11 +53,14 @@ namespace GameApp.Extensions
     public class TcpConnectionHandler : ConnectionHandler
     {
         private readonly IMessageHandler _messageHandler;
+        private readonly IGameManager _gameManager;
         private PipeWriter _writer;
         private PipeReader _reader;
-        public TcpConnectionHandler(IMessageHandler messageHandler)
+        public TcpConnectionHandler(IMessageHandler messageHandler, IGameManager gameManager)
         {
             _messageHandler = messageHandler;
+            _gameManager = gameManager;
+            _gameManager.SendMessageHandler = SendMessage;
         }
         
         public override async Task OnConnectedAsync(ConnectionContext connection)
@@ -75,9 +81,13 @@ namespace GameApp.Extensions
             }
         }
 
-        private async Task OnActionSend(MessageToSend<Action> messageToSend)
+        private async Task SendMessage(string data)
         {
-            
+            if (!string.IsNullOrEmpty(data))
+            {
+                var buffer = Encoding.ASCII.GetBytes(data);
+                await _writer.WriteAsync(buffer);
+            }
         }
     }
     
