@@ -4,6 +4,7 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>GameApp</RootNamespace>
         <LangVersion>8</LangVersion>
+        <UseAppHost>false</UseAppHost>
         <Nullable>warnings</Nullable>
     </PropertyGroup>
 
@@ -17,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\GameService.Domain\GameService.Domain.csproj" />
+      <ProjectReference Include="..\GameService.TCP\GameService.TCP.csproj" />
     </ItemGroup>
 
 </Project>

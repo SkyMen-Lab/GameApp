@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using GameApp.Extensions;
-using GameApp.GameConnectors;
 using GameService.Domain.DTOs;
 using GameService.Domain.Models;
 using GameService.Domain.Repositories;
+using GameService.TCP;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -33,7 +32,7 @@ namespace GameApp.Controllers
         public IActionResult Index()
         {
             Log.Information("Loading index");
-            _gameManager.StartTheGameAsync("c,121");
+            //_gameManager.StartTheGameAsync("c,121");
             return Ok(
                 _mongoRepository
                     .GetListSorted(x => true, 
