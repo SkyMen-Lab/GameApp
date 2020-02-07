@@ -36,11 +36,14 @@ namespace GameApp
         {
             services.Configure<DbSettings>(
                 Configuration.GetSection("DebDbSettings"));
+            services.Configure<TcpSettings>(
+                Configuration.GetSection("TcpSettings"));
             services.AddSingleton<IDbSettings>(provider =>
                 provider.GetRequiredService<IOptions<DbSettings>>().Value);
+            services.AddSingleton<ITcpSettings>(provider =>
+                provider.GetRequiredService<IOptions<TcpSettings>>().Value); 
             services.AddSingleton<MongoRepository>();
             services.AddControllers();
-            //services.AddTcpListener(new IPEndPoint(IPAddress.Loopback, 3434));
             services.AddSingleton<ITcpManager, TcpManager>();
             services.AddSingleton<IGameManager, GameManager>();
             services.AddHostedService<TcpService>();
