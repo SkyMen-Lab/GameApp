@@ -3,9 +3,9 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>GameApp</RootNamespace>
-        <LangVersion>8</LangVersion>
+        <LangVersion>7.3</LangVersion>
         <UseAppHost>false</UseAppHost>
-        <Nullable>warnings</Nullable>
+        <Nullable>disable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

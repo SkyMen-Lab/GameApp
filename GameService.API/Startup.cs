@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using GameApp.Extensions;
+using GameApp.Services;
 using GameService.Domain.Configs;
 using GameService.Domain.Models;
 using GameService.Domain.Repositories;
@@ -40,8 +41,9 @@ namespace GameApp
             services.AddSingleton<MongoRepository>();
             services.AddControllers();
             //services.AddTcpListener(new IPEndPoint(IPAddress.Loopback, 3434));
-            services.AddSingleton<IGameManager, GameManager>();
             services.AddSingleton<ITcpManager, TcpManager>();
+            services.AddSingleton<IGameManager, GameManager>();
+            services.AddHostedService<TcpService>();
             services.AddMvc()
                 .AddNewtonsoftJson(options =>
                 {

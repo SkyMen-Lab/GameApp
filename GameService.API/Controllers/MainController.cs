@@ -55,8 +55,8 @@ namespace GameApp.Controllers
             return Ok(list);
         }
 
-        [HttpPost("create")]
         
+        [HttpPost("create")]
         public IActionResult Create([FromBody]Game game)
         {
             var existingGame = _mongoRepository.GetOne(game.Code);

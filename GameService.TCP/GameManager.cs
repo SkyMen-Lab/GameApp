@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameService.Domain.Models;
+using GameService.TCP.EventArgs;
 using Newtonsoft.Json;
 
 namespace GameService.TCP
@@ -8,10 +10,18 @@ namespace GameService.TCP
     public class GameManager : IGameManager
     {
         private readonly ITcpManager _tcpManager;
+        public event EventHandler<MovementReceivedEventArgs> OnMovementReceivedEvent;
 
         public GameManager(ITcpManager tcpManager)
         {
             _tcpManager = tcpManager;
+            IEventDisposer eventDisposer = tcpManager;
+            eventDisposer.OnMovementReceivedEvent += OnOnMovementReceivedEvent;
+        }
+
+        private async void OnOnMovementReceivedEvent(object? sender, MovementReceivedEventArgs e)
+        {
+            await MoveThePaddleAsync(e.Code, e.Clicks);
         }
 
         public async Task StartTheGameAsync(string code)
@@ -30,9 +40,10 @@ namespace GameService.TCP
             await _tcpManager.SendMessageAsync(message);
         }
 
-        public Task MoveThePaddleAsync(string code, int clicks)
+        public async Task MoveThePaddleAsync(string code, int clicks)
         {
-            throw new System.NotImplementedException();
+            float mov = clicks * 15.6f;
+            await _tcpManager.SendMessageAsync($"{mov} {code}");
         }
     }
 }
