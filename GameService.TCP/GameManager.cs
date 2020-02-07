@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameService.Domain.Models;
 using GameService.TCP.EventArgs;
+using GameService.TCP.EventHandling;
 using Newtonsoft.Json;
 
 namespace GameService.TCP
@@ -10,8 +11,7 @@ namespace GameService.TCP
     public class GameManager : IGameManager
     {
         private readonly ITcpManager _tcpManager;
-        public event EventHandler<MovementReceivedEventArgs> OnMovementReceivedEvent;
-
+        
         public GameManager(ITcpManager tcpManager)
         {
             _tcpManager = tcpManager;

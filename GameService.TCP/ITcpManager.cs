@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using GameApp.Extensions;
+using GameService.TCP.EventHandling;
 
 namespace GameService.TCP
 {
