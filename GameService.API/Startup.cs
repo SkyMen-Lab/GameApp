@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using GameApp.Extensions;
 using GameApp.Services;
 using GameService.Domain.Configs;
 using GameService.Domain.Models;
 using GameService.Domain.Repositories;
 using GameService.TCP;
+using GameService.TCP.EventHandling;
+using GameService.TCP.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -43,6 +44,7 @@ namespace GameApp
             services.AddSingleton<ITcpSettings>(provider =>
                 provider.GetRequiredService<IOptions<TcpSettings>>().Value); 
             services.AddSingleton<MongoRepository>();
+            services.AddSingleton<IEventManager, EventManager>();
             services.AddControllers();
             services.AddSingleton<ITcpManager, TcpManager>();
             services.AddSingleton<IGameManager, GameManager>();

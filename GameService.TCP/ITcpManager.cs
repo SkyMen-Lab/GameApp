@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
-using GameApp.Extensions;
 using GameService.TCP.EventHandling;
 
 namespace GameService.TCP
 {
-    public interface ITcpManager : IEventDisposer
+    public interface ITcpManager
     {
         void StartServer(int port);
         void StopServer();

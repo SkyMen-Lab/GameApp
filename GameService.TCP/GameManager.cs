@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameService.Domain.Models;
-using GameService.TCP.EventArgs;
 using GameService.TCP.EventHandling;
 using Newtonsoft.Json;
 
@@ -15,13 +14,6 @@ namespace GameService.TCP
         public GameManager(ITcpManager tcpManager)
         {
             _tcpManager = tcpManager;
-            IEventDisposer eventDisposer = tcpManager;
-            eventDisposer.OnMovementReceivedEvent += OnOnMovementReceivedEvent;
-        }
-
-        private async void OnOnMovementReceivedEvent(object? sender, MovementReceivedEventArgs e)
-        {
-            await MoveThePaddleAsync(e.Code, e.Clicks);
         }
 
         public async Task StartTheGameAsync(string code)

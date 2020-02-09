@@ -10,4 +10,8 @@
       <ProjectReference Include="..\GameService.Domain\GameService.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+    </ItemGroup>
+
 </Project>
