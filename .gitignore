@@ -30,3 +30,5 @@ GameService.API/.vscode/
 GameService.TCP/obj/Debug/netcoreapp3.1/GameService.TCP.csproj.FileListAbsolute.txt
 
 *.cache
+
+GameService.TCP/obj/
