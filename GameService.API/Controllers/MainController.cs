@@ -93,9 +93,9 @@ namespace GameApp.Controllers
         
         //TOBE replaced by Event Bus
         [HttpPost("user_joined")]
-        public IActionResult UserJoined([FromBody] UserJoinedDTO info)
+        public IActionResult UserJoined([FromBody] UserDTO info)
         {
-            Log.Information("Attempt to register new player");
+            Log.Information("Attempting to register new player");
             var currentGame = _mongoRepository.GetOne(info.GameCode);
             if (currentGame == null)
             {
@@ -127,6 +127,45 @@ namespace GameApp.Controllers
             _mongoRepository.Update(filter, updateConstantDefinition);
             Log.Information($"New player has successfully joined {currentTeam.Name}");
 
+            return Ok();
+        }
+
+        [HttpPost("user_left")]
+        public IActionResult UserLeft([FromBody] UserDTO userLeft)
+        {
+            Log.Information("Attempting to remove a player from the game");
+            
+            var currentGame = _mongoRepository.GetOne(userLeft.GameCode);
+            if (currentGame == null)
+            {
+                Log.Warning($"The game {userLeft.GameCode} does not exist");
+                return BadRequest();
+            }
+
+            var currentTeam = currentGame.Teams.FirstOrDefault(x => string.Equals(x.Code, userLeft.SchoolCode));
+            if (currentTeam == null)
+            {
+                Log.Warning($"The team {userLeft.SchoolCode} does not exist");
+                return BadRequest();
+            }
+            
+            //find a team in a game by codes
+            Expression<Func<Game, bool>> filter = x => string.Equals(x.Code, userLeft.GameCode) && x.Teams.Any(y => string.Equals(y.Code, userLeft.SchoolCode));
+
+            //update number of players
+            currentTeam.NumberOfPlayers--;
+            UpdateDefinition<Game> updatePlayersDefinition = Builders<Game>.Update.Set(
+                x => x.Teams[-1].NumberOfPlayers, currentTeam.NumberOfPlayers);
+
+            //recalculate constant
+            var constant = 1.0 / currentTeam.NumberOfPlayers;
+            UpdateDefinition<Game> updateConstantDefinition = Builders<Game>.Update.Set(
+                x => x.Teams[-1].Constant, constant);
+
+            _mongoRepository.Update(filter, updatePlayersDefinition);
+            _mongoRepository.Update(filter, updateConstantDefinition);
+            Log.Information($"New player has successfully been remove {currentTeam.Name}");
+            
             return Ok();
         }
     }
