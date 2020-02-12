@@ -38,11 +38,6 @@ namespace GameApp
 
         public static IWebHost CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseKestrel((context, options) =>
-                {
-                    options.Listen(IPAddress.Loopback, 5000);
-                    options.Listen(IPAddress.Loopback, 5001, listenOptions => { listenOptions.UseHttps(); });
-                })
                 .UseStartup<Startup>()
                 .Build();
     }

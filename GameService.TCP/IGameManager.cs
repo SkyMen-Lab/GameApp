@@ -2,15 +2,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameService.Domain.Models;
 
-namespace GameApp.GameConnectors
+namespace GameService.TCP
 {
     public interface IGameManager
     {
-        public delegate Task SendMessageDelegate(string content);
-        public SendMessageDelegate SendMessageHandler { get; set; }
         Task StartTheGameAsync(string code);
         Task FinishTheGameAsync(string code);
         Task RegisterTeamsAsync(IEnumerable<Team> teams);
-        Task MoveThePaddleAsync(string code, float move);
+        Task MoveThePaddleAsync(string code, int clicks);
     }
 }

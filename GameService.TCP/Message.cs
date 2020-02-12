@@ -1,6 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
-
-namespace GameApp.Extensions
+namespace GameService.TCP
 {
     public class MessageReceived
     {
