@@ -16,7 +16,7 @@ namespace GameService.TCP.EventHandling
             _serviceProvider = serviceProvider;
         }
         
-        public async Task Execute<T>(object args) where T : IEventCommand, new()
+        public async Task Execute<T>(object args) where T : IEvent, new()
         {
             var eventCommand = new T();
             eventCommand.SetArgs(args);
@@ -24,7 +24,7 @@ namespace GameService.TCP.EventHandling
             await eventCommand.Execute();
         }
 
-        public void Subscribe<T>() where T : IEventCommand, new()
+        public void Subscribe<T>() where T : IEvent, new()
         {
             //TODO: notify other classes about an event
         }

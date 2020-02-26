@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace GameService.TCP.Events
 {
-    public interface IEventCommand
+    public interface IEvent
     {
         Task Execute();
         void SetArgs(object args);

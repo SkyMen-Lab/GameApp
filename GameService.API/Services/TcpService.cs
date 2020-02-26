@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using GameService.TCP;
+using GameService.TCP.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 

@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 
 namespace GameService.TCP.Events
 {
-    public abstract class EventBase<T> : IEventCommand where T : class
+    public abstract class EventBase<T> : IEvent where T : class
     {
         protected T Args;
         protected EventHandler EventHandler;
-        public IEventCommand GetInstance { get; set; }
         public abstract void ResolveDependencies(IServiceProvider serviceProvider);
 
         public abstract Task Execute();

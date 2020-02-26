@@ -5,6 +5,6 @@ namespace GameService.TCP.EventHandling
 {
     public interface IEventManager
     {
-        Task Execute<T>(object args) where T : IEventCommand, new();
+        Task Execute<T>(object args) where T : IEvent, new();
     }
 }

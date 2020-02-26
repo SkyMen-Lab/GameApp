@@ -32,7 +32,6 @@ namespace GameApp.Controllers
         public IActionResult Index()
         {
             Log.Information("Loading index");
-            //_gameManager.StartTheGameAsync("c,121");
             return Ok(
                 _mongoRepository
                     .GetListSorted(x => true, 
@@ -74,7 +73,7 @@ namespace GameApp.Controllers
             }
 
 
-            _gameManager.RegisterTeamsAsync(game.Teams);
+            _gameManager.SetupTeamsAsync(game.Teams);
             
             Log.Information($"The game {game.Code} has been created successfully");
             return Ok();
@@ -96,36 +95,13 @@ namespace GameApp.Controllers
         public IActionResult UserJoined([FromBody] UserDTO info)
         {
             Log.Information("Attempting to register new player");
-            var currentGame = _mongoRepository.GetOne(info.GameCode);
-            if (currentGame == null)
+            var result = ChangeNumberOfUsers(info, UserAction.Left);
+
+            if (!result)
             {
-                Log.Warning($"The game {info.GameCode} does not exist");
                 return BadRequest();
             }
-
-            var currentTeam = currentGame.Teams.FirstOrDefault(x => string.Equals(x.Code, info.SchoolCode));
-            if (currentTeam == null)
-            {
-                Log.Warning($"The team {info.SchoolCode} does not exist");
-                return BadRequest();
-            }
-            
-            //find a team in a game by codes
-            Expression<Func<Game, bool>> filter = x => string.Equals(x.Code, info.GameCode) && x.Teams.Any(y => string.Equals(y.Code, info.SchoolCode));
-
-            //update number of players
-            currentTeam.NumberOfPlayers++;
-            UpdateDefinition<Game> updatePlayersDefinition = Builders<Game>.Update.Set(
-                x => x.Teams[-1].NumberOfPlayers, currentTeam.NumberOfPlayers);
-
-            //recalculate constant
-            var constant = 1.0 / currentTeam.NumberOfPlayers;
-            UpdateDefinition<Game> updateConstantDefinition = Builders<Game>.Update.Set(
-                x => x.Teams[-1].Constant, constant);
-
-            _mongoRepository.Update(filter, updatePlayersDefinition);
-            _mongoRepository.Update(filter, updateConstantDefinition);
-            Log.Information($"New player has successfully joined {currentTeam.Name}");
+            Log.Information($"New player has successfully joined {info.SchoolCode}");
 
             return Ok();
         }
@@ -134,26 +110,49 @@ namespace GameApp.Controllers
         public IActionResult UserLeft([FromBody] UserDTO userLeft)
         {
             Log.Information("Attempting to remove a player from the game");
-            
-            var currentGame = _mongoRepository.GetOne(userLeft.GameCode);
-            if (currentGame == null)
+
+            var result = ChangeNumberOfUsers(userLeft, UserAction.Left);
+
+            if (!result)
             {
-                Log.Warning($"The game {userLeft.GameCode} does not exist");
                 return BadRequest();
             }
+            
+            Log.Information($"The player has successfully been removed {userLeft.SchoolCode}");
 
-            var currentTeam = currentGame.Teams.FirstOrDefault(x => string.Equals(x.Code, userLeft.SchoolCode));
+            return Ok();
+        }
+
+        private bool ChangeNumberOfUsers(UserDTO info, UserAction userAction)
+        {
+            var currentGame = _mongoRepository.GetOne(info.GameCode);
+            if (currentGame == null)
+            {
+                Log.Warning($"The game {info.GameCode} does not exist");
+                return false;
+            }
+
+            var currentTeam = currentGame.Teams.FirstOrDefault(x => string.Equals(x.Code, info.SchoolCode));
             if (currentTeam == null)
             {
-                Log.Warning($"The team {userLeft.SchoolCode} does not exist");
-                return BadRequest();
+                Log.Warning($"The team {info.SchoolCode} does not exist");
+                return false;
             }
             
             //find a team in a game by codes
-            Expression<Func<Game, bool>> filter = x => string.Equals(x.Code, userLeft.GameCode) && x.Teams.Any(y => string.Equals(y.Code, userLeft.SchoolCode));
+            Expression<Func<Game, bool>> filter = x => string.Equals(x.Code, info.GameCode) && x.Teams.Any(y => string.Equals(y.Code, info.SchoolCode));
 
             //update number of players
-            currentTeam.NumberOfPlayers--;
+            switch (userAction)
+            {
+                case UserAction.Left:
+                    currentTeam.NumberOfPlayers--;
+                    break;
+                case UserAction.Joined:
+                    currentTeam.NumberOfPlayers++;
+                    break;
+            }
+            
             UpdateDefinition<Game> updatePlayersDefinition = Builders<Game>.Update.Set(
                 x => x.Teams[-1].NumberOfPlayers, currentTeam.NumberOfPlayers);
 
@@ -164,9 +163,13 @@ namespace GameApp.Controllers
 
             _mongoRepository.Update(filter, updatePlayersDefinition);
             _mongoRepository.Update(filter, updateConstantDefinition);
-            Log.Information($"New player has successfully been remove {currentTeam.Name}");
-            
-            return Ok();
+            return true;
+        }
+
+        enum UserAction
+        {
+            Left,
+            Joined
         }
     }
 }

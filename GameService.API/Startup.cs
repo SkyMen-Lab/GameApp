@@ -10,6 +10,7 @@ using GameService.Domain.Repositories;
 using GameService.TCP;
 using GameService.TCP.EventHandling;
 using GameService.TCP.Events;
+using GameService.TCP.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

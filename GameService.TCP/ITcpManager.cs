@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using GameService.TCP.EventHandling;
+using GameService.TCP.Models;
 
 namespace GameService.TCP
 {
@@ -7,8 +8,7 @@ namespace GameService.TCP
     {
         void StartServer(int port);
         void StopServer();
-        bool IsConnected { get; }
-        Task SendMessageAsync(string message);
+        Task SendPacketAsync(Packet packet);
         Task ConnectAsync(string ip, int port);
         //TODO: add game instance parameter
         Task DisconnectAsync();
