@@ -11,18 +11,25 @@ namespace GameService.TCP.Events
     {
         private IGameManager _gameManager;
         private MongoRepository _mongoRepository;
+        private GameServerConnectedEventArgs _args;
+
+        protected override GameServerConnectedEventArgs Args
+        {
+            get => _args;
+            set => _args = value;
+        }
+
         public override void ResolveDependencies(IServiceProvider serviceProvider)
         {
             _gameManager = serviceProvider.GetRequiredService<IGameManager>();
             _mongoRepository = serviceProvider.GetRequiredService<MongoRepository>();
         }
 
-        public async override Task Execute()
+        public override async Task Execute()
         {
             if (_mongoRepository.GetAll().Any())
             {
-                //if no games present
-
+                //if a game is present
                 var game = _mongoRepository.GetAll().First();
                 await _gameManager.SetupTeamsAsync(game.Teams);
             }

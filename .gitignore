@@ -32,3 +32,5 @@ GameService.TCP/obj/Debug/netcoreapp3.1/GameService.TCP.csproj.FileListAbsolute.
 *.cache
 
 GameService.TCP/obj/
+
+*.user

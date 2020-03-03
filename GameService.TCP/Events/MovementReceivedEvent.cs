@@ -7,6 +7,13 @@ namespace GameService.TCP.Events
     public class MovementReceivedEvent : EventBase<MovementReceivedEventArgs>
     {
         private IGameManager _gameManager;
+        private MovementReceivedEventArgs _args;
+
+        protected override MovementReceivedEventArgs Args
+        {
+            get => _args;
+            set => _args = value;
+        }
 
         public override void ResolveDependencies(IServiceProvider serviceProvider)
         {
