@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GameService.Domain.DTOs;
 using GameService.Domain.Models;
 
 namespace GameService.TCP
@@ -10,5 +11,6 @@ namespace GameService.TCP
         Task FinishTheGameAsync(string code);
         Task SetupTeamsAsync(IEnumerable<Team> teams);
         Task MoveThePaddleAsync(string code, int clicks);
+        Task UpdateNumberOfPlayers(UpdateNumberOfPlayersDTO dto);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GameService.Domain.DTOs;
 using GameService.Domain.Models;
 using GameService.TCP.EventHandling;
 using GameService.TCP.Models;
@@ -37,6 +38,12 @@ namespace GameService.TCP
         {
             float mov = clicks * 15.6f;
             await _tcpManager.SendPacketAsync(new Packet(Meta.Message, $"{mov} {code}"));
+        }
+
+        public async Task UpdateNumberOfPlayers(UpdateNumberOfPlayersDTO dto)
+        {
+            var message = JsonConvert.SerializeObject(dto);
+            await _tcpManager.SendPacketAsync(new Packet(Meta.Message, message));
         }
     }
 }

@@ -163,6 +163,17 @@ namespace GameApp.Controllers
 
             _mongoRepository.Update(filter, updatePlayersDefinition);
             _mongoRepository.Update(filter, updateConstantDefinition);
+            
+            var updatedNofUsersDTO = new UpdateNumberOfPlayersDTO()
+            {
+                GameCode = currentGame.Code,
+                SchoolCode = currentTeam.Code,
+                NumberOfPlayers = currentTeam.NumberOfPlayers
+            };
+            
+            //send updates to game server
+            _gameManager.UpdateNumberOfPlayers(updatedNofUsersDTO);
+            
             return true;
         }
 
