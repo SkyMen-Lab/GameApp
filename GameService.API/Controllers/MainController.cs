@@ -92,7 +92,7 @@ namespace GameApp.Controllers
         
         //TOBE replaced by Event Bus
         [HttpPost("user_joined")]
-        public IActionResult UserJoined([FromBody] UserDTO info)
+        public IActionResult UserJoined([FromBody] TeamDTO info)
         {
             Log.Information("Attempting to register new player");
             var result = ChangeNumberOfUsers(info, UserAction.Left);
@@ -101,29 +101,29 @@ namespace GameApp.Controllers
             {
                 return BadRequest();
             }
-            Log.Information($"New player has successfully joined {info.SchoolCode}");
+            Log.Information($"New player has successfully joined {info.TeamCode}");
 
             return Ok();
         }
 
         [HttpPost("user_left")]
-        public IActionResult UserLeft([FromBody] UserDTO userLeft)
+        public IActionResult UserLeft([FromBody] TeamDTO teamLeft)
         {
             Log.Information("Attempting to remove a player from the game");
 
-            var result = ChangeNumberOfUsers(userLeft, UserAction.Left);
+            var result = ChangeNumberOfUsers(teamLeft, UserAction.Left);
 
             if (!result)
             {
                 return BadRequest();
             }
             
-            Log.Information($"The player has successfully been removed {userLeft.SchoolCode}");
+            Log.Information($"The player has successfully been removed {teamLeft.TeamCode}");
 
             return Ok();
         }
 
-        private bool ChangeNumberOfUsers(UserDTO info, UserAction userAction)
+        private bool ChangeNumberOfUsers(TeamDTO info, UserAction userAction)
         {
             var currentGame = _mongoRepository.GetOne(info.GameCode);
             if (currentGame == null)
@@ -132,15 +132,15 @@ namespace GameApp.Controllers
                 return false;
             }
 
-            var currentTeam = currentGame.Teams.FirstOrDefault(x => string.Equals(x.Code, info.SchoolCode));
+            var currentTeam = currentGame.Teams.FirstOrDefault(x => string.Equals(x.Code, info.TeamCode));
             if (currentTeam == null)
             {
-                Log.Warning($"The team {info.SchoolCode} does not exist");
+                Log.Warning($"The team {info.TeamCode} does not exist");
                 return false;
             }
             
             //find a team in a game by codes
-            Expression<Func<Game, bool>> filter = x => string.Equals(x.Code, info.GameCode) && x.Teams.Any(y => string.Equals(y.Code, info.SchoolCode));
+            Expression<Func<Game, bool>> filter = x => string.Equals(x.Code, info.GameCode) && x.Teams.Any(y => string.Equals(y.Code, info.TeamCode));
 
             //update number of players
             switch (userAction)
