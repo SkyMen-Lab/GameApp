@@ -20,24 +20,28 @@ namespace GameService.TCP
 
         public async Task StartTheGameAsync(string code)
         {
-            await _tcpManager.SendPacketAsync(new Packet(Meta.Message, "start"));
+            await _tcpManager.SendPacketAsync(new Packet(Meta.Message, 
+                new Message(GameAction.StartGame, "start").ToJson()));
         }
 
         public async Task FinishTheGameAsync(string code)
         {
-            await _tcpManager.SendPacketAsync(new Packet(Meta.Message, "finish"));
+            await _tcpManager.SendPacketAsync(new Packet(Meta.Message, 
+                new Message(GameAction.FinishGame, "finish").ToJson()));
         }
 
         public async Task SetupTeamsAsync(IEnumerable<Team> teams)
         {
-            var message = JsonConvert.SerializeObject(teams);
-            await _tcpManager.SendPacketAsync(new Packet(Meta.Connect, message));
+            var message = new Message(GameAction.InitTeams,JsonConvert.SerializeObject(teams));
+            var packet = new Packet(Meta.Connect, message.ToJson());
+            await _tcpManager.SendPacketAsync(packet);
         }
 
         public async Task MoveThePaddleAsync(string code, int clicks)
         {
             float mov = clicks * 15.6f;
-            await _tcpManager.SendPacketAsync(new Packet(Meta.Message, $"{mov} {code}"));
+            var message = new Message(GameAction.Movement, $"{mov} {code}");
+            await _tcpManager.SendPacketAsync(new Packet(Meta.Message, message.ToJson()));
         }
 
         public async Task UpdateNumberOfPlayers(UpdateNumberOfPlayersDTO dto)

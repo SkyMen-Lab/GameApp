@@ -7,7 +7,7 @@ namespace GameService.Domain.DTOs
     public class UpdateNumberOfPlayersDTO
     {
         public string GameCode { get; set; }
-        public string SchoolCode { get; set; }
+        public string TeamCode { get; set; }
         public int NumberOfPlayers { get; set; }
     }
 }

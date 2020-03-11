@@ -18,9 +18,9 @@ namespace GameService.TCP.Events
             
         }
 
-        public async override Task Execute()
+        public override Task Execute()
         {
-            
+            return Task.CompletedTask;
         }
     }
 

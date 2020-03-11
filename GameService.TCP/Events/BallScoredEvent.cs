@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using GameService.Domain.DTOs;
 using GameService.Domain.Models;
@@ -26,12 +27,11 @@ namespace GameService.TCP.Events
 
         public override Task Execute()
         {
-            var game = _mongoRepository.GetOne(_args.TeamScored.GameCode);
-            if (game != null)
+            if (_mongoRepository.GetAll().Any())
             {
-                var filter = _mongoRepository.GetTeamFilter(_args.TeamScored.GameCode, _args.TeamScored.TeamCode);
-                var update = Builders<Game>.Update.Inc(
-                    x => x.Teams[-1].Score, 1);
+                var filter = _mongoRepository.GetCurrentGameTeamFilter(_args.TeamScored.Code);
+                var update = Builders<Game>.Update.Set(
+                    x => x.Teams[-1].Score, _args.TeamScored.Score);
                 _mongoRepository.Update(filter, update);
             }
             
@@ -42,9 +42,9 @@ namespace GameService.TCP.Events
     public class BallScoredEventArgs : EventArgs
     {
         //team that has scored the ball
-        public TeamDTO TeamScored { get; set; }
+        public Team TeamScored { get; set; }
 
-        public BallScoredEventArgs(TeamDTO dto)
+        public BallScoredEventArgs(Team dto)
         {
             TeamScored = dto;
         }

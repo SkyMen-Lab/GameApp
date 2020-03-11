@@ -24,7 +24,7 @@ namespace GameService.TCP.Events
         {
             if (_gameManager != null)
             {
-                await _gameManager.MoveThePaddleAsync(Args.Code, Args.Clicks);
+                await _gameManager.MoveThePaddleAsync(_args.Code, _args.Clicks);
                 EventHandler?.Invoke(this, EventArgs.Empty);
             }
         }

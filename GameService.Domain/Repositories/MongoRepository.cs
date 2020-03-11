@@ -57,6 +57,11 @@ namespace GameService.Domain.Repositories
         {
             return x => string.Equals(x.Code, gameCode) && x.Teams.Any(y => string.Equals(y.Code, teamCode));
         }
+        
+        public Expression<Func<Game, bool>> GetCurrentGameTeamFilter(string teamCode)
+        {
+            return x => x.Teams.Any(y => string.Equals(y.Code, teamCode));
+        }
 
         public bool Delete(string code)
         {

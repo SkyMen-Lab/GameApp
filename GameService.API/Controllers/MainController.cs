@@ -95,7 +95,7 @@ namespace GameApp.Controllers
         public IActionResult UserJoined([FromBody] TeamDTO info)
         {
             Log.Information("Attempting to register new player");
-            var result = ChangeNumberOfUsers(info, UserAction.Left);
+            var result = ChangeNumberOfUsers(info, UserAction.Joined);
 
             if (!result)
             {
@@ -167,7 +167,7 @@ namespace GameApp.Controllers
             var updatedNofUsersDTO = new UpdateNumberOfPlayersDTO()
             {
                 GameCode = currentGame.Code,
-                SchoolCode = currentTeam.Code,
+                TeamCode = currentTeam.Code,
                 NumberOfPlayers = currentTeam.NumberOfPlayers
             };
             

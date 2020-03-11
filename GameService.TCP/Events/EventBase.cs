@@ -13,7 +13,6 @@ namespace GameService.TCP.Events
     {
         protected abstract T Args { get; set; }
         protected EventHandler EventHandler;
-        private IServiceProvider _serviceProvider;
         /// <summary>
         /// Implement to resolve dependencies via <c>IServiceProvider</c>
         /// </summary>
@@ -27,13 +26,7 @@ namespace GameService.TCP.Events
         /// Called when the event is triggered by <c>IEventManager</c>
         /// </summary>
         public abstract Task Execute();
-
-        protected TU GetService<TU>()
-        {
-            return _serviceProvider.GetRequiredService<TU>();
-        }
         
-
         public void SetEvent(EventHandler handler)
         {
             EventHandler = handler;
