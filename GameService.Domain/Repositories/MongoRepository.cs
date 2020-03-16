@@ -36,7 +36,6 @@ namespace GameService.Domain.Repositories
             var code = game.Code;
             //TODO: custom exceptions
             if (GetOne(code) != null) throw new ArgumentException();
-            game.BallPosition = new Position(10, 20);
             _games.InsertOne(game);
             return game;
         }

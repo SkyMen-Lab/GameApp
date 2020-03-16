@@ -31,7 +31,7 @@ namespace GameService.TCP.Events
             {
                 //if a game is present
                 var game = _mongoRepository.GetAll().First();
-                await _gameManager.SetupTeamsAsync(game.Teams);
+                await _gameManager.SetupGameAsync(game);
             }
         }
     }

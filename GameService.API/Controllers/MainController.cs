@@ -73,7 +73,7 @@ namespace GameApp.Controllers
             }
 
 
-            _gameManager.SetupTeamsAsync(game.Teams);
+            _gameManager.SetupGameAsync(game);
             
             Log.Information($"The game {game.Code} has been created successfully");
             return Ok();

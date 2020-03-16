@@ -30,9 +30,9 @@ namespace GameService.TCP
                 new Message(GameAction.FinishGame, "finish").ToJson()));
         }
 
-        public async Task SetupTeamsAsync(IEnumerable<Team> teams)
+        public async Task SetupGameAsync(Game game)
         {
-            var message = new Message(GameAction.InitTeams,JsonConvert.SerializeObject(teams));
+            var message = new Message(GameAction.InitGame,JsonConvert.SerializeObject(game));
             var packet = new Packet(Meta.Connect, message.ToJson());
             await _tcpManager.SendPacketAsync(packet);
         }
@@ -46,8 +46,8 @@ namespace GameService.TCP
 
         public async Task UpdateNumberOfPlayers(UpdateNumberOfPlayersDTO dto)
         {
-            var message = JsonConvert.SerializeObject(dto);
-            await _tcpManager.SendPacketAsync(new Packet(Meta.Message, message));
+            var message = new Message(GameAction.UpdateNumberOfPlayers, JsonConvert.SerializeObject(dto));
+            await _tcpManager.SendPacketAsync(new Packet(Meta.Message, message.ToJson()));
         }
     }
 }

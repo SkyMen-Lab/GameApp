@@ -27,7 +27,7 @@ namespace GameService.TCP.Models
     public enum GameAction
     {
         StartGame,
-        InitTeams,
+        InitGame,
         UpdateNumberOfPlayers,
         Movement,
         Score,

@@ -9,7 +9,7 @@ namespace GameService.TCP
     {
         Task StartTheGameAsync(string code);
         Task FinishTheGameAsync(string code);
-        Task SetupTeamsAsync(IEnumerable<Team> teams);
+        Task SetupGameAsync(Game game);
         Task MoveThePaddleAsync(string code, int clicks);
         Task UpdateNumberOfPlayers(UpdateNumberOfPlayersDTO dto);
     }
