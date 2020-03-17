@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using GameService.Domain.DTOs;
 using GameService.Domain.Models;
@@ -17,6 +18,7 @@ namespace GameService.TCP.Events
 
         private MongoRepository _mongoRepository;
         private ITcpManager _tcpManager;
+        private IGameManager _gameManager;
 
         protected override GameFinishedEventArgs Args
         {
@@ -28,6 +30,7 @@ namespace GameService.TCP.Events
         {
             _mongoRepository = serviceProvider.GetRequiredService<MongoRepository>();
             _tcpManager = serviceProvider.GetRequiredService<ITcpManager>();
+            _gameManager = serviceProvider.GetRequiredService<IGameManager>();
         }
 
         public override async Task Execute()
@@ -37,7 +40,7 @@ namespace GameService.TCP.Events
             {
                 //make request to StorageService to upload the summary
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("https://127.0.0.1:5008");
+                client.BaseAddress = new Uri("http://127.0.0.1:5007");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -49,12 +52,14 @@ namespace GameService.TCP.Events
                     MaxSpeedLevel = _args.MaxSpeedLevel
                 };
                 
-                var content = new StringContent(JsonConvert.SerializeObject(summary));
-                var response = await client.PostAsync("https://127.0.0.1:5008/api/game/finish", content);
+                var content = new StringContent(JsonConvert.SerializeObject(summary), 
+                    Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(new Uri("/api/game/finish", UriKind.Relative), content);
                 if (response.IsSuccessStatusCode)
                 {
                     //delete a game from db to allow
                     _mongoRepository.Delete(_args.GameCode);
+                    await _gameManager.FinishTheGameAsync(_args.GameCode);
                 }
                 // close connection with clients
                 // to be implemented
