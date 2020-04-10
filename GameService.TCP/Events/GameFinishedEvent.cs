@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using GameService.Domain.DTOs;
 using GameService.Domain.Models;
 using GameService.Domain.Repositories;
+using GameService.TCP.Configs;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
@@ -19,6 +20,7 @@ namespace GameService.TCP.Events
         private MongoRepository _mongoRepository;
         private ITcpManager _tcpManager;
         private IGameManager _gameManager;
+        private IConnectionSettings _connectionSettings;
 
         protected override GameFinishedEventArgs Args
         {
@@ -31,6 +33,7 @@ namespace GameService.TCP.Events
             _mongoRepository = serviceProvider.GetRequiredService<MongoRepository>();
             _tcpManager = serviceProvider.GetRequiredService<ITcpManager>();
             _gameManager = serviceProvider.GetRequiredService<IGameManager>();
+            _connectionSettings = serviceProvider.GetRequiredService<IConnectionSettings>();
         }
 
         public override async Task Execute()
@@ -40,7 +43,7 @@ namespace GameService.TCP.Events
             {
                 //make request to StorageService to upload the summary
                 var client = new HttpClient();
-                client.BaseAddress = new Uri("http://127.0.0.1:5007");
+                client.BaseAddress = new Uri(_connectionSettings.StorageServiceAddress);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

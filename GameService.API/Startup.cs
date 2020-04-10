@@ -8,6 +8,7 @@ using GameService.Domain.Configs;
 using GameService.Domain.Models;
 using GameService.Domain.Repositories;
 using GameService.TCP;
+using GameService.TCP.Configs;
 using GameService.TCP.EventHandling;
 using GameService.TCP.Events;
 using GameService.TCP.Models;
@@ -40,10 +41,14 @@ namespace GameApp
                 Configuration.GetSection("DebDbSettings"));
             services.Configure<TcpSettings>(
                 Configuration.GetSection("TcpSettings"));
+            services.Configure<ConnectionSettings>(
+                Configuration.GetSection("ConnectionSettings"));
             services.AddSingleton<IDbSettings>(provider =>
                 provider.GetRequiredService<IOptions<DbSettings>>().Value);
             services.AddSingleton<ITcpSettings>(provider =>
-                provider.GetRequiredService<IOptions<TcpSettings>>().Value); 
+                provider.GetRequiredService<IOptions<TcpSettings>>().Value);
+            services.AddSingleton<IConnectionSettings>(provider =>
+                provider.GetRequiredService<IOptions<ConnectionSettings>>().Value);
             services.AddSingleton<MongoRepository>();
             services.AddSingleton<IEventManager, EventManager>();
             services.AddControllers();

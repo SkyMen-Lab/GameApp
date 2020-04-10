@@ -1,4 +1,4 @@
-namespace GameService.TCP.Models
+namespace GameService.TCP.Configs
 {
     public class TcpSettings : ITcpSettings
     {

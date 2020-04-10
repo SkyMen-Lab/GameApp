@@ -16,11 +16,6 @@ namespace GameApp
     {
         public static void Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .WriteTo.File("logs/log.log")
-                .CreateLogger();
             try
             {
                 Log.Information("Starting up");
@@ -39,6 +34,19 @@ namespace GameApp
         public static IWebHost CreateHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .ConfigureAppConfiguration((host, config) =>
+                {
+                    var env = host.HostingEnvironment;
+                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                    config.AddEnvironmentVariables();
+                })
+                .UseSerilog((context, configuration) =>
+                {
+                    configuration.Enrich.FromLogContext()
+                        .WriteTo.Console()
+                        .WriteTo.File($"logs/log_{DateTime.Today.Date}.log");
+                })
                 .Build();
     }
 }
