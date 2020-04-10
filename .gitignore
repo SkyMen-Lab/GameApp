@@ -12,3 +12,25 @@
 GameService.Domain/obj/
 
 GameService.API/obj/
+
+GameService.API/bin/
+
+GameService.Domain/bin/
+
+GameService.API/logs/
+
+GameService.API/.vscode/
+
+.vscode/
+
+*.dll
+
+*.pdb
+
+GameService.TCP/obj/Debug/netcoreapp3.1/GameService.TCP.csproj.FileListAbsolute.txt
+
+*.cache
+
+GameService.TCP/obj/
+
+*.user
