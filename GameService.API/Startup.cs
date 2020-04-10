@@ -69,6 +69,14 @@ namespace GameApp
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.Use((context, next) =>
+                {
+                    context.Request.PathBase = new PathString("/game");
+                    return next();
+                });
+            }
 
             app.UseHttpsRedirection();
 
