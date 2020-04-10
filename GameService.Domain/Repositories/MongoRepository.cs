@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using GameService.Domain.Configs;
 using GameService.Domain.Models;
@@ -35,7 +36,6 @@ namespace GameService.Domain.Repositories
             var code = game.Code;
             //TODO: custom exceptions
             if (GetOne(code) != null) throw new ArgumentException();
-            game.BallPosition = new Position(10, 20);
             _games.InsertOne(game);
             return game;
         }
@@ -50,6 +50,16 @@ namespace GameService.Domain.Repositories
         {
             var result = _games.UpdateOne(filter, updateDefinition).IsAcknowledged;
             return result;
+        }
+
+        public Expression<Func<Game, bool>> GetTeamFilter(string gameCode, string teamCode)
+        {
+            return x => string.Equals(x.Code, gameCode) && x.Teams.Any(y => string.Equals(y.Code, teamCode));
+        }
+        
+        public Expression<Func<Game, bool>> GetCurrentGameTeamFilter(string teamCode)
+        {
+            return x => x.Teams.Any(y => string.Equals(y.Code, teamCode));
         }
 
         public bool Delete(string code)
