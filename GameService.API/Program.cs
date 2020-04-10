@@ -39,7 +39,6 @@ namespace GameApp
                     var env = host.HostingEnvironment;
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
-                    config.AddEnvironmentVariables();
                 })
                 .UseSerilog((context, configuration) =>
                 {

@@ -68,6 +68,7 @@ namespace GameApp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseHttpsRedirection();
             }
             else
             {
@@ -77,8 +78,6 @@ namespace GameApp
                     return next();
                 });
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
