@@ -43,9 +43,10 @@ namespace GameApp
                 })
                 .UseSerilog((context, configuration) =>
                 {
+                    var date = DateTime.Today;
                     configuration.Enrich.FromLogContext()
                         .WriteTo.Console()
-                        .WriteTo.File($"logs/log_{DateTime.Today.Date}.log");
+                        .WriteTo.File($"logs/log_{date.Day}_{date.Month}_{date.Year}.log");
                 })
                 .Build();
     }
