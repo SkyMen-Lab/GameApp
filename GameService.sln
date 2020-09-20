@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameService.Domain", "GameS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameService.TCP", "GameService.TCP\GameService.TCP.csproj", "{309E00D2-B2D2-4C94-857D-EA60FEC5E2ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThrowBall", "throwball\ThrowBall\ThrowBall.csproj", "{DAAAEA97-BFAA-40BB-963B-17B6BA511432}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,5 +27,9 @@ Global
 		{309E00D2-B2D2-4C94-857D-EA60FEC5E2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{309E00D2-B2D2-4C94-857D-EA60FEC5E2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{309E00D2-B2D2-4C94-857D-EA60FEC5E2ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAAAEA97-BFAA-40BB-963B-17B6BA511432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAAAEA97-BFAA-40BB-963B-17B6BA511432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAAAEA97-BFAA-40BB-963B-17B6BA511432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAAAEA97-BFAA-40BB-963B-17B6BA511432}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

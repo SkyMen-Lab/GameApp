@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\GameService.Domain\GameService.Domain.csproj" />
+      <ProjectReference Include="..\throwball\ThrowBall\ThrowBall.csproj" />
     </ItemGroup>
 
     <ItemGroup>
