@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 
 namespace GameService.TCP
 {
+    // TODO: Rewrite it
+    // * Important info
     public class GameManager : IGameManager
     {
         private readonly ITcpManager _tcpManager;
