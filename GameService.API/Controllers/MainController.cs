@@ -80,10 +80,10 @@ namespace GameApp.Controllers
         }
 
         [HttpPost("start")]
-        public async Task<IActionResult> StartGameAsync([FromBody] string code)
+        public async Task<IActionResult> StartGameAsync([FromBody] GameCodeDTO codeDTO)
         {
-            if (_mongoRepository.GetOne(code) != null)
-                await _gameManager.StartTheGameAsync(code);
+            if (_mongoRepository.GetOne(codeDTO.Code) != null)
+                await _gameManager.StartTheGameAsync(codeDTO.Code);
             else
                 return NotFound();
             
