@@ -10,6 +10,7 @@ using GameService.Domain.Repositories;
 using GameService.TCP.Configs;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace GameService.TCP.Events
 {
@@ -54,19 +55,32 @@ namespace GameService.TCP.Events
                     GameCode = _args.GameCode,
                     MaxSpeedLevel = _args.MaxSpeedLevel
                 };
-                
-                var content = new StringContent(JsonConvert.SerializeObject(summary), 
+
+                var content = new StringContent(JsonConvert.SerializeObject(summary),
                     Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(new Uri("/api/game/finish", UriKind.Relative), content);
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    //delete a game from db to allow
-                    _mongoRepository.Delete(_args.GameCode);
-                    await _gameManager.FinishTheGameAsync(_args.GameCode);
+                    var response = await client.PostAsync(new Uri("/api/game/finish", UriKind.Relative), content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        //delete a game from db to allow
+                        _mongoRepository.Delete(_args.GameCode);
+                        await _gameManager.FinishTheGameAsync(_args.GameCode);
+                        Log.Information($"Game {_args.GameCode} has been finished and deleted");
+                    }
+                    else
+                    {
+                        Log.Error("Error while requesting StorageService", _args.GameCode);
+                    }
+
+                    // close connection with clients
+                    // to be implemented
+                    //await _tcpManager.DisconnectAsync();
                 }
-                // close connection with clients
-                // to be implemented
-                //await _tcpManager.DisconnectAsync();
+                catch (HttpRequestException e)
+                {
+                    Log.Error("StorageService is unavailable!", _args.GameCode);
+                }
             }
         }
     }
