@@ -1,0 +1,27 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: MongoDB.Driver
+    versions:
+    - 2.11.6
+    - 2.12.0
+    - 2.12.1
+  - dependency-name: Microsoft.AspNetCore.Connections.Abstractions
+    versions:
+    - 5.0.2
+    - 5.0.3
+    - 5.0.4
+  - dependency-name: Microsoft.AspNetCore.Mvc.NewtonsoftJson
+    versions:
+    - 5.0.2
+    - 5.0.3
+    - 5.0.4
+  - dependency-name: Serilog.AspNetCore
+    versions:
+    - 3.4.0
+    - 4.0.0
